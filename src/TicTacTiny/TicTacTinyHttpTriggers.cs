@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Net;
+﻿using System.Net;
 using jkdmyrs.TicTacTiny.Domain;
 using jkdmyrs.TicTacTiny.Infrastructure.Extensions;
 using Microsoft.Azure.Functions.Worker;
@@ -51,7 +48,7 @@ namespace jkdmyrs.TicTacTiny
             }
             return await req.CreateStringResponseAsync(
                 HttpStatusCode.OK,
-                new Board(gameId).Move(player == 1, position).ToString()
+                new Game(gameId).Move(player == 1, position).ToString()
             ).ConfigureAwait(false);
         }
     }
