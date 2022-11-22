@@ -28,10 +28,10 @@
     <Using Include="System.Threading.ExecutionContext" Alias="ExecutionContext" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\src\TicTacTiny.Infrastructure\TicTacTiny.Infrastructure.csproj">
+    <ProjectReference Include="..\TicTacTiny.Domain\TicTacTiny.Domain.csproj">
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
-    <ProjectReference Include="..\src\TicTacTiny.Domain\TicTacTiny.Domain.csproj">
+    <ProjectReference Include="..\TicTacTiny.Infrastructure\TicTacTiny.Infrastructure.csproj">
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
   </ItemGroup>
