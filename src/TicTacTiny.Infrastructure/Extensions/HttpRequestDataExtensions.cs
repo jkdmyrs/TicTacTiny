@@ -24,6 +24,16 @@ namespace jkdmyrs.TicTacTiny.Infrastructure.Extensions
             }, ct).ConfigureAwait(false);
             return result;
         }
+
+        public static string? GetSecurePassword(this HttpRequestData requestData)
+        {
+            string? securePassword = null;
+            if (requestData.Headers.TryGetValues("X-Game-Room-Pass", out IEnumerable<string>? values))
+            {
+                securePassword = values.First();
+            }
+            return securePassword;
+        }
     }
 }
 
