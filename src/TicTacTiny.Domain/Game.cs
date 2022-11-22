@@ -6,14 +6,39 @@ namespace jkdmyrs.TicTacTiny.Domain
   public class Game
   {
         public bool[] BoardArr { get; private set; }
-        public bool HasWinner { get; private set; }
-        public bool Winner { get; private set; }
-        public bool CurrentMove { get; private set; }
+        private bool[] _controlBits => BoardArr.Skip(18).ToArray();
 
-        public Game(string hexStr)
+        public bool HasWinner => _hasWinnerBit;
+        private bool _hasWinnerBit => _controlBits[1];
+
+        private bool _hybridBit => _controlBits[0];
+        public bool Winner
+        {
+            get
+            {
+                if (!_hasWinnerBit)
+                {
+                    throw new InvalidOperationException("Game not finished.");
+                }
+                return _hybridBit;
+            }
+        }
+        public bool CurrentMove
+        {
+            get
+            {
+                if (_hasWinnerBit)
+                {
+                    throw new InvalidOperationException("Game finished.");
+                }
+                return _hybridBit;
+            }
+        }
+
+        public static Game FromId(string hexStr)
         {
             var hex = hexStr.AsSpan();
-            BoardArr = new bool[20];
+            var board = new bool[20];
             int b = 0;
             for (int i = 0; i < hex.Length; i++)
             {
@@ -22,26 +47,18 @@ namespace jkdmyrs.TicTacTiny.Domain
                 {
                     bits[3], bits[2], bits[1], bits[0]
                 };
-                BoardArr[b] = ourBits[0];
-                BoardArr[b + 1] = ourBits[1];
-                BoardArr[b + 2] = ourBits[2];
-                BoardArr[b + 3] = ourBits[3];
+                board[b] = ourBits[0];
+                board[b + 1] = ourBits[1];
+                board[b + 2] = ourBits[2];
+                board[b + 3] = ourBits[3];
                 b += 4;
             }
-
-            var reverse = BoardArr.Reverse().ToArray();
-            HasWinner = reverse[0];
-            Winner = reverse[1];
-            CurrentMove = reverse[1];
+            return new Game(board);
         }
 
         private Game(bool[] board)
         {
             BoardArr = board;
-            var reverse = board.Reverse().ToArray();
-            HasWinner = reverse[0];
-            Winner = reverse[1];
-            CurrentMove = reverse[1];
         }
 
         public Game Move(bool move, int offset)

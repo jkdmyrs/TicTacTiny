@@ -48,7 +48,7 @@ namespace jkdmyrs.TicTacTiny
             }
             return await req.CreateStringResponseAsync(
                 HttpStatusCode.OK,
-                new Game(gameId).Move(player == 1, position).ToString()
+                Game.FromId(gameId).Move(player == 1, position).ToString()
             ).ConfigureAwait(false);
         }
     }
