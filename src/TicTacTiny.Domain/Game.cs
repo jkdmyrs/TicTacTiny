@@ -3,14 +3,14 @@ using System.Collections;
 
 namespace jkdmyrs.TicTacTiny.Domain
 {
-  public class Board
+  public class Game
   {
         public bool[] BoardArr { get; private set; }
         public bool HasWinner { get; private set; }
         public bool Winner { get; private set; }
         public bool CurrentMove { get; private set; }
 
-        public Board(string hexStr)
+        public Game(string hexStr)
         {
             var hex = hexStr.AsSpan();
             BoardArr = new bool[20];
@@ -35,7 +35,7 @@ namespace jkdmyrs.TicTacTiny.Domain
             CurrentMove = reverse[1];
         }
 
-        private Board(bool[] board)
+        private Game(bool[] board)
         {
             BoardArr = board;
             var reverse = board.Reverse().ToArray();
@@ -44,7 +44,7 @@ namespace jkdmyrs.TicTacTiny.Domain
             CurrentMove = reverse[1];
         }
 
-        public Board Move(bool move, int offset)
+        public Game Move(bool move, int offset)
         {
             if (BoardArr is null)
             {
