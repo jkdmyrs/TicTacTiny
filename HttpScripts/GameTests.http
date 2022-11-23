@@ -1,0 +1,17 @@
+@password = testpass
+@roomId = testRoom
+
+POST http://localhost:7114/api/room/create
+Content-Type: application/json
+
+{
+    "Password": "{{password}}",
+    "RoomId": "{{roomId}}"
+}
+
+###
+
+POST http://localhost:7114/api/room/{{roomId}}/player/1/position/1
+X-Game-Room-Pass: {{password}}
+
+###

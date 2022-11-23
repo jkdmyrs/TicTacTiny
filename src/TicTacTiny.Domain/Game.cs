@@ -35,7 +35,7 @@ namespace jkdmyrs.TicTacTiny.Domain
             }
         }
 
-        public static Game FromId(string hexStr)
+        public static Game FromCode(string hexStr)
         {
             var hex = hexStr.AsSpan();
             var board = new bool[20];

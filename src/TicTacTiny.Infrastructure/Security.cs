@@ -8,7 +8,7 @@ namespace jkdmyrs.TicTacTiny.Infrastructure
         private const int SALT_LENGTH = 10;
         private static Random random = new Random();
 
-        public static byte[] GenerateSalt()
+        private static byte[] GenerateSalt()
         {
             const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
             return _utf8.GetBytes(new string(Enumerable.Repeat(chars, SALT_LENGTH)
@@ -48,10 +48,10 @@ namespace jkdmyrs.TicTacTiny.Infrastructure
             return securePass.Skip(offset).Take(SALT_LENGTH).ToArray();
         }
 
-        public static bool VerifyPassword(string rawPass, byte[] securePass)
+        public static bool VerifyPassword(string rawpass, byte[] securepass)
         {
-            var calculated = HashAndSalt(rawPass, GetSalt(securePass), GetOffset(securePass));
-            return securePass.SequenceEqual(calculated);
+            var calculated = HashAndSalt(rawpass, GetSalt(securepass), GetOffset(securepass));
+            return securepass.SequenceEqual(calculated);
         }
 	}
 }

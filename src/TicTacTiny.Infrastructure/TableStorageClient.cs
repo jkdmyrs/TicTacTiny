@@ -1,15 +1,37 @@
-﻿namespace jkdmyrs.TicTacTiny.Infrastructure
+﻿using Azure.Data.Tables;
+
+namespace jkdmyrs.TicTacTiny.Infrastructure
 {
 	public class TableStorageClient : IStorageClient
     {
-        public Task<GameRoomEntity> GetGameRoomAsync(string roomId, string? securePassword = null)
+        private readonly TableServiceClient _client;
+        private readonly Lazy<TableClient> _gameRoomTable;
+
+        public TableStorageClient(TableServiceClient client)
         {
-            throw new NotImplementedException();
+            _client = client ?? throw new ArgumentNullException(nameof(client));
+
+            _gameRoomTable = new Lazy<TableClient>(() =>
+            {
+                var table = _client.GetTableClient(TableStorageConstants.TABLE_NAME_GAME_ROOM);
+                table.CreateIfNotExists();
+                return table;
+            });
         }
 
-        public Task UpsertGameRoomAsync(string gameCode, string roomId, string? securePassword = null)
+        public async Task<GameRoomEntity> GetGameRoomAsync(string roomId, CancellationToken ct = default)
         {
-            throw new NotImplementedException();
+            return await _gameRoomTable.Value.GetEntityAsync<GameRoomEntity>(roomId, roomId, cancellationToken: ct).ConfigureAwait(false); 
+        }
+
+        private async Task UpsertGameRoomAsync(GameRoomEntity entity, CancellationToken ct = default)
+        {
+            await _gameRoomTable.Value.UpsertEntityAsync(entity, cancellationToken: ct).ConfigureAwait(false);
+        }
+
+        public async Task UpsertGameRoomAsync(string gameCode, string roomId, byte[]? securepass = null, CancellationToken ct = default)
+        {
+            await this.UpsertGameRoomAsync(new GameRoomEntity(gameCode, roomId, securepass), ct).ConfigureAwait(false);
         }
     }
 }

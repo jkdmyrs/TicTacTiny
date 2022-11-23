@@ -1,5 +1,4 @@
-﻿using System;
-using System.Net;
+﻿using System.Net;
 using Microsoft.Azure.Functions.Worker.Http;
 
 namespace jkdmyrs.TicTacTiny.Infrastructure.Extensions
@@ -25,10 +24,10 @@ namespace jkdmyrs.TicTacTiny.Infrastructure.Extensions
             return result;
         }
 
-        public static string? GetSecurePassword(this HttpRequestData requestData)
+        public static string GetRawPassword(this HttpRequestData requestData)
         {
-            string? securePassword = null;
-            if (requestData.Headers.TryGetValues("X-Game-Room-Pass", out IEnumerable<string>? values))
+            string securePassword = string.Empty;
+            if (requestData.Headers.TryGetValues(InfrastructureConstants.PASSWORD_HEADER, out IEnumerable<string>? values))
             {
                 securePassword = values.First();
             }

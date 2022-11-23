@@ -1,24 +1,36 @@
-﻿namespace jkdmyrs.TicTacTiny.Infrastructure
+﻿using Azure;
+using Azure.Data.Tables;
+
+namespace jkdmyrs.TicTacTiny.Infrastructure
 {
-	public class GameRoomEntity
+	public class GameRoomEntity : ITableEntity
 	{
 		public GameRoomEntity() { }
 
-		public GameRoomEntity(string gameCode, string roomId, string? securePassword = null)
+		public GameRoomEntity(string gameCode, string roomId, byte[]? securepass = null)
 		{
 			RoomId = roomId ?? throw new ArgumentNullException(nameof(roomId));
+			PartitionKey = roomId;
+			RowKey = roomId;
             GameCode = gameCode ?? throw new ArgumentNullException(nameof(gameCode));
-			if (securePassword is not null && string.IsNullOrWhiteSpace(securePassword))
+			if (securepass is null)
             {
-                throw new ArgumentException("Password cannot be an empty string/whitespace.", nameof(securePassword));
+				SecurePassword = null;
             }
-			SecurePassword = securePassword ?? string.Empty;
+			else
+            {
+				SecurePassword = securepass;
+            }
 		}
 
-		public string RoomId { get; set; }
-		public string SecurePassword { get; set; }
-		public string GameCode { get; set; }
-		public bool Secured => SecurePassword != string.Empty;
-	}
+		public string RoomId { get; init; }
+		public byte[]? SecurePassword { get; init; }
+		public string GameCode { get; init; }
+
+        public string PartitionKey { get; set; }
+        public string RowKey { get; set; }
+        public DateTimeOffset? Timestamp { get; set; }
+        public ETag ETag { get; set; }
+    }
 }
 

@@ -11,12 +11,12 @@ namespace jkdmyrs.TicTacTiny
     public class TicTacTiny
     {
         private readonly ILogger _logger;
-        private readonly IStorageClient _storage;
+        private readonly GameManager _manager;
 
-        public TicTacTiny(ILoggerFactory loggerFactory, IStorageClient storage)
+        public TicTacTiny(ILoggerFactory loggerFactory, GameManager gameManager)
         {
             _logger = loggerFactory.CreateLogger<TicTacTiny>();
-            _storage = storage ?? throw new ArgumentNullException(nameof(storage));
+            _manager = gameManager ?? throw new ArgumentNullException(nameof(gameManager));
         }
 
         [Function(nameof(NewGame))]
@@ -24,14 +24,14 @@ namespace jkdmyrs.TicTacTiny
             CancellationToken ct)
         {
             var request = await req.ReadFromJsonAsync<CreateGameRequest>(ct).ConfigureAwait(false);
-            if (request is null)
+            if (request is null || string.IsNullOrWhiteSpace(request.RoomId))
             {
                 return await req.CreateBadRequestAsync(
-                    $"Invalide {nameof(CreateGameRequest)} request.",
+                    $"Invalid {nameof(CreateGameRequest)} request.",
                     ct
                 ).ConfigureAwait(false);
             }
-            await _storage.UpsertGameRoomAsync(DomainConstants.NEW_GAME, request.RoomId, request.Password).ConfigureAwait(false);
+            await _manager.CreateGameAsnc(request.RoomId, request.Password, ct).ConfigureAwait(false);
             var response = req.CreateResponse(HttpStatusCode.OK);
             await response.WriteStringAsync(DomainConstants.NEW_GAME).ConfigureAwait(false);
             return response;
@@ -56,17 +56,9 @@ namespace jkdmyrs.TicTacTiny
                 return await req.CreateBadRequestAsync(error, ct).ConfigureAwait(false);
             }
 
-            var password = req.GetSecurePassword();
+            var game = await _manager.MakeMoveAsync(roomId, player == 1, position, req.GetRawPassword(), ct).ConfigureAwait(false);
 
-            var gameroom = await _storage.GetGameRoomAsync(roomId, password).ConfigureAwait(false);
-            var newCode = gameroom
-                .ToGame()
-                .Move(player == 1, position)
-                .ToString();
-
-            await _storage.UpsertGameRoomAsync(newCode, roomId, password).ConfigureAwait(false);
-
-            return await req.CreateStringResponseAsync(HttpStatusCode.OK, newCode).ConfigureAwait(false);
+            return await req.CreateStringResponseAsync(HttpStatusCode.OK, game.ToString()).ConfigureAwait(false);
         }
     }
 }

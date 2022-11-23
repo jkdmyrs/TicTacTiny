@@ -6,7 +6,7 @@ namespace jkdmyrs.TicTacTiny.Infrastructure.Extensions
 	{
 		public static Game ToGame(this GameRoomEntity entity)
 		{
-			return new Game(entity.GameCode);
+			return Game.FromCode(entity.GameCode);
 		}
 	}
 }
