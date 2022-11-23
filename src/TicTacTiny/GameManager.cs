@@ -20,10 +20,10 @@ namespace jkdmyrs.TicTacTiny
             {
                 pass = Security.SecurePassword(rawpass);
             }
-            await _client.UpsertGameRoomAsync(DomainConstants.NEW_GAME, roomId, pass, ct).ConfigureAwait(false);
+            await _client.InsertGameRommAsync(DomainConstants.NEW_GAME, roomId.Trim(), pass, ct).ConfigureAwait(false);
         }
 
-        public async Task<Game> MakeMoveAsync(string roomId, bool player, int position, string rawpass, CancellationToken ct = default)
+        public async Task<Game> MakeMoveAsync(string roomId, int player, int position, string rawpass, CancellationToken ct = default)
         {
             var room = await this.GetGameRoomAsync(roomId, rawpass, ct).ConfigureAwait(false);
             var game = room.ToGame().Move(player, position);
@@ -41,9 +41,9 @@ namespace jkdmyrs.TicTacTiny
         private async Task<GameRoomEntity> GetGameRoomAsync(string roomId, string rawpass, CancellationToken ct = default)
         {
             var gameroom = await _client.GetGameRoomAsync(roomId, ct).ConfigureAwait(false);
-            if (gameroom.SecurePassword is not null && !Security.VerifyPassword(rawpass, gameroom.SecurePassword))
+            if (gameroom.SecurePassword is not null)
             {
-                throw new Exception("Invalid password.");
+                Security.VerifyPassword(rawpass, gameroom.SecurePassword);
             }
             return gameroom;
         }

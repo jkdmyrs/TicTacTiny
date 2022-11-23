@@ -26,15 +26,14 @@ namespace jkdmyrs.TicTacTiny
             var request = await req.ReadFromJsonAsync<CreateGameRequest>(ct).ConfigureAwait(false);
             if (request is null || string.IsNullOrWhiteSpace(request.RoomId))
             {
-                return await req.CreateBadRequestAsync(
+                return await req.CreateStatusCodeResultAsync(
+                    HttpStatusCode.BadRequest,
                     $"Invalid {nameof(CreateGameRequest)} request.",
                     ct
                 ).ConfigureAwait(false);
             }
             await _manager.CreateGameAsnc(request.RoomId, request.Password, ct).ConfigureAwait(false);
-            var response = req.CreateResponse(HttpStatusCode.OK);
-            await response.WriteStringAsync(DomainConstants.NEW_GAME).ConfigureAwait(false);
-            return response;
+            return await req.CreateStatusCodeResultAsync(HttpStatusCode.OK, DomainConstants.NEW_GAME, ct).ConfigureAwait(false);
         }
 
         [Function(nameof(Move))]
@@ -45,20 +44,8 @@ namespace jkdmyrs.TicTacTiny
             int position,
             CancellationToken ct = default)
         {
-            if (!(player == 1 || player == 0))
-            {
-                string error = string.Format(CopyTextConstants.INVALID_PLAYER_FMT, player);
-                return await req.CreateBadRequestAsync(error, ct).ConfigureAwait(false);
-            }
-            if (position < 0 || position > 8)
-            {
-                string error = string.Format(CopyTextConstants.INVALID_POSITION_FMT, position);
-                return await req.CreateBadRequestAsync(error, ct).ConfigureAwait(false);
-            }
-
-            var game = await _manager.MakeMoveAsync(roomId, player == 1, position, req.GetRawPassword(), ct).ConfigureAwait(false);
-
-            return await req.CreateStringResponseAsync(HttpStatusCode.OK, game.ToString()).ConfigureAwait(false);
+            var game = await _manager.MakeMoveAsync(roomId, player, position, req.GetRawPassword(), ct).ConfigureAwait(false);
+            return await req.CreateStatusCodeResultAsync(HttpStatusCode.OK, game.ToString()).ConfigureAwait(false);
         }
     }
 }

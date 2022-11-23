@@ -5,22 +5,29 @@ namespace jkdmyrs.TicTacTiny.Infrastructure.Extensions
 {
     public static class HttpRequestDataExtensions
     {
-        public static async Task<HttpResponseData> CreateStringResponseAsync(this HttpRequestData requestData, HttpStatusCode statusCode, string response)
+        public static async Task<HttpResponseData> CreateStatusCodeResultAsync(this HttpRequestData requestData, HttpStatusCode httpStatusCode, CancellationToken ct = default)
         {
-            var result = requestData.CreateResponse(statusCode);
-            await result.WriteStringAsync(response).ConfigureAwait(false);
+            var result = requestData.CreateResponse();
+            await result.WriteAsJsonAsync(new
+            {
+                Title = httpStatusCode.ToString(),
+                Status = (int)httpStatusCode,
+                Detail = httpStatusCode.ToString()
+            }, ct).ConfigureAwait(false);
+            result.StatusCode = httpStatusCode;
             return result;
         }
 
-        public static async Task<HttpResponseData> CreateBadRequestAsync(this HttpRequestData requestData, string message, CancellationToken ct = default)
+        public static async Task<HttpResponseData> CreateStatusCodeResultAsync(this HttpRequestData requestData, HttpStatusCode httpStatusCode, string message, CancellationToken ct = default)
         {
-            var result = requestData.CreateResponse(HttpStatusCode.BadRequest);
+            var result = requestData.CreateResponse();
             await result.WriteAsJsonAsync(new
             {
-                Title = HttpStatusCode.BadRequest.ToString(),
-                Status = (int)HttpStatusCode.BadRequest,
+                Title = httpStatusCode.ToString(),
+                Status = (int)httpStatusCode,
                 Detail = message
             }, ct).ConfigureAwait(false);
+            result.StatusCode = httpStatusCode;
             return result;
         }
 

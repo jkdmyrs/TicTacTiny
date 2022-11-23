@@ -1,7 +1,8 @@
 @password = testpass
 @roomId = testRoom
+@port = 7071
 
-POST http://localhost:7114/api/room/create
+POST http://localhost:{{port}}/api/room/create
 Content-Type: application/json
 
 {
@@ -11,7 +12,37 @@ Content-Type: application/json
 
 ###
 
-POST http://localhost:7114/api/room/{{roomId}}/player/1/position/1
+POST http://localhost:{{port}}/api/room/{{roomId}}/player/1/position/4
+X-Game-Room-Pass: {{password}}
+
+###
+
+POST http://localhost:{{port}}/api/room/{{roomId}}/player/0/position/0
+X-Game-Room-Pass: {{password}}
+
+###
+
+POST http://localhost:{{port}}/api/room/{{roomId}}/player/1/position/1
+X-Game-Room-Pass: {{password}}
+
+###
+
+POST http://localhost:{{port}}/api/room/{{roomId}}/player/0/position/2
+X-Game-Room-Pass: {{password}}
+
+###
+
+POST http://localhost:{{port}}/api/room/{{roomId}}/player/1/position/7
+X-Game-Room-Pass: {{password}}
+
+###
+
+POST http://localhost:{{port}}/api/room/{{roomId}}/player/0/position/6
+X-Game-Room-Pass: {{password}}
+
+###
+
+POST http://localhost:{{port}}/api/room/{{roomId}}/player/1/position/8
 X-Game-Room-Pass: {{password}}
 
 ###

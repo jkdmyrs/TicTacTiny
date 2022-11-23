@@ -1,12 +1,13 @@
 ﻿using System.Text;
+using jkdmyrs.TicTacTiny.Infrastructure.Exceptions;
 
 namespace jkdmyrs.TicTacTiny.Infrastructure
 {
 	public static class Security
     {
-        private static Encoding _utf8 = Encoding.UTF8;
+        private readonly static Encoding _utf8 = Encoding.UTF8;
         private const int SALT_LENGTH = 10;
-        private static Random random = new Random();
+        private readonly static Random random = new Random();
 
         private static byte[] GenerateSalt()
         {
@@ -48,10 +49,13 @@ namespace jkdmyrs.TicTacTiny.Infrastructure
             return securePass.Skip(offset).Take(SALT_LENGTH).ToArray();
         }
 
-        public static bool VerifyPassword(string rawpass, byte[] securepass)
+        public static void VerifyPassword(string rawpass, byte[] securepass)
         {
             var calculated = HashAndSalt(rawpass, GetSalt(securepass), GetOffset(securepass));
-            return securepass.SequenceEqual(calculated);
+            if(!securepass.SequenceEqual(calculated))
+            {
+                throw new InvalidPasswordException();
+            }
         }
 	}
 }

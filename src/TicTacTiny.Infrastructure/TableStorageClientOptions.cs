@@ -2,6 +2,6 @@
 {
     public class TableStorageClientOptions
     {
-        public string ConnectionString { get; set; }
+        public string ConnectionString { get; set; } = "InvalidConnectionString";
     }
 }

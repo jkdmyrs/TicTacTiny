@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections;
+using System.Numerics;
+using jkdmyrs.TicTacTiny.Domain.Exceptions;
+using jkdmyrs.TicTacTiny.Domain.Extensions;
 
 namespace jkdmyrs.TicTacTiny.Domain
 {
@@ -37,23 +40,30 @@ namespace jkdmyrs.TicTacTiny.Domain
 
         public static Game FromCode(string hexStr)
         {
-            var hex = hexStr.AsSpan();
-            var board = new bool[20];
-            int b = 0;
-            for (int i = 0; i < hex.Length; i++)
+            try
             {
-                BitArray bits = new BitArray(new int[] { int.Parse(hex.Slice(i, 1), style: System.Globalization.NumberStyles.HexNumber) });
-                var ourBits = new bool[4]
+                var hex = hexStr.AsSpan();
+                var board = new bool[20];
+                int b = 0;
+                for (int i = 0; i < hex.Length; i++)
                 {
+                    BitArray bits = new BitArray(new int[] { int.Parse(hex.Slice(i, 1), style: System.Globalization.NumberStyles.HexNumber) });
+                    var ourBits = new bool[4]
+                    {
                     bits[3], bits[2], bits[1], bits[0]
-                };
-                board[b] = ourBits[0];
-                board[b + 1] = ourBits[1];
-                board[b + 2] = ourBits[2];
-                board[b + 3] = ourBits[3];
-                b += 4;
+                    };
+                    board[b] = ourBits[0];
+                    board[b + 1] = ourBits[1];
+                    board[b + 2] = ourBits[2];
+                    board[b + 3] = ourBits[3];
+                    b += 4;
+                }
+                return new Game(board);
             }
-            return new Game(board);
+            catch
+            {
+                throw new InvalidBoardException();
+            }
         }
 
         private Game(bool[] board)
@@ -61,18 +71,29 @@ namespace jkdmyrs.TicTacTiny.Domain
             BoardArr = board;
         }
 
-        public Game Move(bool move, int offset)
+        public Game Move(int player, int position)
         {
-            if (BoardArr is null)
+            // todo - verify position is open
+            bool move = player == 1;
+            if (!(player == 1 || player == 0))
             {
-                throw new NullReferenceException(nameof(BoardArr));
+                throw new InvalidMoveException(string.Format(CopyTextConstants.INVALID_PLAYER_FMT, player));
             }
             if (move != CurrentMove)
             {
-                throw new ArgumentException("Wrong player attempted a move.", nameof(move));
+                throw new InvalidMoveException(string.Format(CopyTextConstants.WRONG_PLAYER_FMT, move.ToPlayerCopyText(), CurrentMove.ToPlayerCopyText()));
+            }
+            if (position < 0 || position > 8)
+            {
+                throw new InvalidMoveException(string.Format(CopyTextConstants.INVALID_POSITION_FMT, position));
+            }
+            if (BoardArr is null)
+            {
+                // unexpected
+                throw new Exception();
             }
             var newBoard = (bool[])BoardArr.Clone();
-            int i = offset * 2;
+            int i = position * 2;
             newBoard[i] = true;
             newBoard[i+1] = move;
             bool? winner = CheckWinner(newBoard);
@@ -107,6 +128,7 @@ namespace jkdmyrs.TicTacTiny.Domain
             return string.Join(string.Empty, hex);
         }
 
+        // todo - improve this with bitwise maths
         private static bool? CheckWinner(bool[] board)
         {
             // check rows

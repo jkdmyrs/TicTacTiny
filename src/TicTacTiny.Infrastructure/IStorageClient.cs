@@ -2,6 +2,7 @@
 {
 	public interface IStorageClient
     {
+        Task InsertGameRommAsync(string gameCode, string roomId, byte[]? securepass = null, CancellationToken ct = default);
         Task UpsertGameRoomAsync(string gameCode, string roomId, byte[]? securepass = null, CancellationToken ct = default);
         Task<GameRoomEntity> GetGameRoomAsync(string roomId, CancellationToken ct = default);
         Task DeleteGameRoomAsync(string roomId, CancellationToken ct = default);

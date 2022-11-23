@@ -5,23 +5,18 @@ namespace jkdmyrs.TicTacTiny.Infrastructure
 {
 	public class GameRoomEntity : ITableEntity
 	{
-		public GameRoomEntity() { }
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+        public GameRoomEntity() { }
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
-		public GameRoomEntity(string gameCode, string roomId, byte[]? securepass = null)
+        public GameRoomEntity(string gameCode, string roomId, byte[]? securepass = null)
 		{
-			RoomId = roomId ?? throw new ArgumentNullException(nameof(roomId));
+			RoomId = roomId;
 			PartitionKey = roomId;
 			RowKey = roomId;
-            GameCode = gameCode ?? throw new ArgumentNullException(nameof(gameCode));
-			if (securepass is null)
-            {
-				SecurePassword = null;
-            }
-			else
-            {
-				SecurePassword = securepass;
-            }
-		}
+            GameCode = gameCode;
+			SecurePassword = securepass;
+        }
 
 		public string RoomId { get; init; }
 		public byte[]? SecurePassword { get; init; }
