@@ -2,7 +2,7 @@
 using jkdmyrs.TicTacTiny.Infrastructure;
 using jkdmyrs.TicTacTiny.Infrastructure.Extensions;
 
-namespace jkdmyrs.TicTacTiny
+namespace jkdmyrs.TicTacTiny.API
 {
     public class GameManager
     {

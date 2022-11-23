@@ -7,7 +7,7 @@ using Microsoft.Azure.Functions.Worker.Middleware;
 using System.Net;
 using jkdmyrs.TicTacTiny.Infrastructure.Extensions;
 
-namespace jkdmyrs.TicTacTiny.Middleware
+namespace jkdmyrs.TicTacTiny.API.Middleware
 {
     public class ExceptionHandlingMiddleware : IFunctionsWorkerMiddleware
     {
