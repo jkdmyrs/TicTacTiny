@@ -1,7 +1,7 @@
 ﻿using Azure.Data.Tables;
 using jkdmyrs.TicTacTiny;
 using jkdmyrs.TicTacTiny.Infrastructure;
-using jkdmyrs.TicTacTiny.Infrastructure.Middleware;
+using jkdmyrs.TicTacTiny.Middleware;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;

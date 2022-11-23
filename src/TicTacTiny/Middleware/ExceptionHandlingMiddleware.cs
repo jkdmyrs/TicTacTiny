@@ -1,13 +1,13 @@
 ﻿using System;
-using System.Net;
 using jkdmyrs.TicTacTiny.Domain.Exceptions;
 using jkdmyrs.TicTacTiny.Infrastructure.Exceptions;
-using jkdmyrs.TicTacTiny.Infrastructure.Extensions;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Azure.Functions.Worker.Middleware;
+using System.Net;
+using jkdmyrs.TicTacTiny.Infrastructure.Extensions;
 
-namespace jkdmyrs.TicTacTiny.Infrastructure.Middleware
+namespace jkdmyrs.TicTacTiny.Middleware
 {
     public class ExceptionHandlingMiddleware : IFunctionsWorkerMiddleware
     {

@@ -1,10 +1,12 @@
 ﻿using System;
+using jkdmyrs.TicTacTiny.Domain;
+
 namespace jkdmyrs.TicTacTiny.Infrastructure.Exceptions
 {
 	public class EntityNotFoundException : Exception
 	{
 		public EntityNotFoundException()
-			:base("Room does not exist.")
+			:base(CopyTextConstants.ROOM_DOES_NOT_EXIST)
 		{
 
 		}

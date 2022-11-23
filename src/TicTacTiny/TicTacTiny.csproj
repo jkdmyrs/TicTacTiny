@@ -14,6 +14,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Remove="Microsoft.Azure.Functions.Worker.Extensions.Http" />
+    <None Remove="Middleware\" />
   </ItemGroup>
   <ItemGroup>
     <None Update="host.json">
@@ -34,5 +35,8 @@
     <ProjectReference Include="..\TicTacTiny.Infrastructure\TicTacTiny.Infrastructure.csproj">
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Middleware\" />
   </ItemGroup>
 </Project>
