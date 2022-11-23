@@ -1,13 +1,17 @@
 ﻿using Azure.Data.Tables;
 using jkdmyrs.TicTacTiny;
 using jkdmyrs.TicTacTiny.Infrastructure;
+using jkdmyrs.TicTacTiny.Infrastructure.Middleware;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 
 var host = new HostBuilder()
-    .ConfigureFunctionsWorkerDefaults()
+    .ConfigureFunctionsWorkerDefaults(builder =>
+    {
+        builder.UseMiddleware<ExceptionHandlingMiddleware>();
+    })
     .ConfigureServices(services =>
     {
         // configuration

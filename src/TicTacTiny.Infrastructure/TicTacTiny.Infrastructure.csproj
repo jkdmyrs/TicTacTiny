@@ -11,9 +11,13 @@
     <None Remove="Extensions\" />
     <None Remove="Microsoft.Azure.Functions.Worker.Extensions.Http" />
     <None Remove="Microsoft.Azure.Functions.Worker.Core" />
+    <None Remove="Middleware\" />
+    <None Remove="Exceptions\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Extensions\" />
+    <Folder Include="Middleware\" />
+    <Folder Include="Exceptions\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Azure.Data.Tables" Version="12.7.1" />
