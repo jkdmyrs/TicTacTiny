@@ -33,7 +33,7 @@ namespace jkdmyrs.TicTacTiny
                 ).ConfigureAwait(false);
             }
             await _manager.CreateGameAsnc(request.RoomId, request.Password, ct).ConfigureAwait(false);
-            return await req.CreateStatusCodeResultAsync(HttpStatusCode.OK, DomainConstants.NEW_GAME, ct).ConfigureAwait(false);
+            return await req.CreateStringResultAsync(DomainConstants.NEW_GAME, ct).ConfigureAwait(false);
         }
 
         [Function(nameof(Move))]
@@ -45,7 +45,7 @@ namespace jkdmyrs.TicTacTiny
             CancellationToken ct = default)
         {
             var game = await _manager.MakeMoveAsync(roomId, player, position, req.GetRawPassword(), ct).ConfigureAwait(false);
-            return await req.CreateStatusCodeResultAsync(HttpStatusCode.OK, game.ToString()).ConfigureAwait(false);
+            return await req.CreateStringResultAsync(game.ToString()).ConfigureAwait(false);
         }
     }
 }

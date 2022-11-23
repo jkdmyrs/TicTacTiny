@@ -1,10 +1,18 @@
 ﻿using System.Net;
+using System.Net.Mail;
 using Microsoft.Azure.Functions.Worker.Http;
 
 namespace jkdmyrs.TicTacTiny.Infrastructure.Extensions
 {
     public static class HttpRequestDataExtensions
     {
+        public static async Task<HttpResponseData> CreateStringResultAsync(this HttpRequestData requestData, string content, CancellationToken ct = default)
+        {
+            var result = requestData.CreateResponse();
+            await result.WriteStringAsync(content).ConfigureAwait(false);
+            return result;
+        }
+
         public static async Task<HttpResponseData> CreateStatusCodeResultAsync(this HttpRequestData requestData, HttpStatusCode httpStatusCode, CancellationToken ct = default)
         {
             var result = requestData.CreateResponse();

@@ -50,7 +50,7 @@ namespace jkdmyrs.TicTacTiny.Domain
                     BitArray bits = new BitArray(new int[] { int.Parse(hex.Slice(i, 1), style: System.Globalization.NumberStyles.HexNumber) });
                     var ourBits = new bool[4]
                     {
-                    bits[3], bits[2], bits[1], bits[0]
+                        bits[3], bits[2], bits[1], bits[0]
                     };
                     board[b] = ourBits[0];
                     board[b + 1] = ourBits[1];
