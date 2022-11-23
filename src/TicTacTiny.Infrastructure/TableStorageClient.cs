@@ -33,6 +33,11 @@ namespace jkdmyrs.TicTacTiny.Infrastructure
         {
             await this.UpsertGameRoomAsync(new GameRoomEntity(gameCode, roomId, securepass), ct).ConfigureAwait(false);
         }
+
+        public async Task DeleteGameRoomAsync(string roomId, CancellationToken ct = default)
+        {
+            await _gameRoomTable.Value.DeleteEntityAsync(roomId, roomId, cancellationToken: ct).ConfigureAwait(false);
+        }
     }
 }
 

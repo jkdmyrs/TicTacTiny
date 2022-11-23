@@ -47,12 +47,12 @@ namespace jkdmyrs.TicTacTiny
         {
             if (!(player == 1 || player == 0))
             {
-                string error = string.Format(ErrorTextConstants.INVALID_PLAYER_FMT, player);
+                string error = string.Format(CopyTextConstants.INVALID_PLAYER_FMT, player);
                 return await req.CreateBadRequestAsync(error, ct).ConfigureAwait(false);
             }
             if (position < 0 || position > 8)
             {
-                string error = string.Format(ErrorTextConstants.INVALID_POSITION_FMT, position);
+                string error = string.Format(CopyTextConstants.INVALID_POSITION_FMT, position);
                 return await req.CreateBadRequestAsync(error, ct).ConfigureAwait(false);
             }
 

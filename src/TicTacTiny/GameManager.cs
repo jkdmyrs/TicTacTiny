@@ -27,7 +27,14 @@ namespace jkdmyrs.TicTacTiny
         {
             var room = await this.GetGameRoomAsync(roomId, rawpass, ct).ConfigureAwait(false);
             var game = room.ToGame().Move(player, position);
-            await _client.UpsertGameRoomAsync(game.ToString(), roomId, room.SecurePassword, ct).ConfigureAwait(false);
+            if (game.HasWinner)
+            {
+                await _client.DeleteGameRoomAsync(roomId, ct).ConfigureAwait(false);
+            }
+            else
+            {
+                await _client.UpsertGameRoomAsync(game.ToString(), roomId, room.SecurePassword, ct).ConfigureAwait(false);
+            }
             return game;
         }
 
