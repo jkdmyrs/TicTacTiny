@@ -25,7 +25,7 @@ namespace jkdmyrs.TicTacTiny.Infrastructure
         {
             if (!saltOffset.HasValue)
             {
-                saltOffset = random.Next(9);
+                saltOffset = random.Next(15);
             }
 
             var hash = System.Security.Cryptography.SHA256.HashData(_utf8.GetBytes(rawpass).Concat(rawsalt).ToArray());
