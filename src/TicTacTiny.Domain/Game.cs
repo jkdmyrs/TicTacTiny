@@ -8,8 +8,9 @@ namespace jkdmyrs.TicTacTiny.Domain
 {
   public class Game
   {
-        public bool[] BoardArr { get; private set; }
-        private bool[] _controlBits => BoardArr.Skip(18).ToArray();
+        public UInt32 hexBoard { get; set; }
+        public bool[] Board { get; private set; }
+        private bool[] _controlBits => Board.Skip(18).ToArray();
 
         public bool HasWinner => _hasWinnerBit;
         private bool _hasWinnerBit => _controlBits[1];
@@ -58,6 +59,7 @@ namespace jkdmyrs.TicTacTiny.Domain
                     board[b + 3] = ourBits[3];
                     b += 4;
                 }
+
                 return new Game(board);
             }
             catch
@@ -68,7 +70,8 @@ namespace jkdmyrs.TicTacTiny.Domain
 
         private Game(bool[] board)
         {
-            BoardArr = board;
+            Board = board;
+            hexBoard = Convert.ToUInt32(this.ToString(), 16);
         }
 
         public Game Move(int player, int position)
@@ -87,16 +90,17 @@ namespace jkdmyrs.TicTacTiny.Domain
             {
                 throw new InvalidMoveException(string.Format(CopyTextConstants.INVALID_POSITION_FMT, position));
             }
-            if (BoardArr is null)
+            if (Board is null)
             {
                 // unexpected
                 throw new Exception();
             }
-            var newBoard = (bool[])BoardArr.Clone();
+            var newBoard = (bool[])Board.Clone();
             int i = position * 2;
             newBoard[i] = true;
             newBoard[i+1] = move;
-            bool? winner = CheckWinner(newBoard);
+            hexBoard = Convert.ToUInt32(new Game(newBoard).ToString(), 16);
+            bool? winner = CheckWinner(newBoard, hexBoard);
             var reversed = newBoard.Reverse().ToArray();
             if (winner is not null)
             {
@@ -108,13 +112,15 @@ namespace jkdmyrs.TicTacTiny.Domain
                 reversed[0] = false;
                 reversed[1] = !move;
             }
-            return new(reversed.Reverse().ToArray());
+            Board = reversed.Reverse().ToArray();
+            hexBoard = Convert.ToUInt32(this.ToString(), 16);
+            return this;
         }
 
         public override string ToString()
         {
             bool[] zero = new bool[] { false, false, false, false };
-            var bits = (bool[])BoardArr.Clone();
+            var bits = (bool[])Board.Clone();
             char[] hex = new char[5];
             for (int i = 0; i < 5; i++)
             {
@@ -129,34 +135,26 @@ namespace jkdmyrs.TicTacTiny.Domain
         }
 
         // todo - improve this with bitwise maths
-        private static bool? CheckWinner(bool[] board)
+        private static bool? CheckWinner(bool[] board, UInt32 hexBoard)
         {
             // check rows
-            List<(bool, bool)> spots = new();
-            var workingBoard = (bool[])board.Clone();
-            for (int i = 0; i < 9; i++)
+            if ((hexBoard & MaskConstants.MASK_WIN_ROW1) == MaskConstants.MASK_WIN_ROW1
+                || (hexBoard & MaskConstants.MASK_WIN_ROW2) == MaskConstants.MASK_WIN_ROW2
+                || (hexBoard & MaskConstants.MASK_WIN_ROW3) == MaskConstants.MASK_WIN_ROW3)
             {
-                var spot = workingBoard.Take(2).ToArray();
-                spots.Add((spot[0], spot[1]));
-                workingBoard = workingBoard.Skip(2).ToArray();
+                return true;
             }
-            for (int i = 0; i < 3; i++)
+            UInt32 invertedBoard = hexBoard ^ MaskConstants.MASK_FLIP_GAME;
+            if ((invertedBoard & MaskConstants.MASK_WIN_ROW1) == MaskConstants.MASK_WIN_ROW1
+                || (invertedBoard & MaskConstants.MASK_WIN_ROW2) == MaskConstants.MASK_WIN_ROW2
+                || (invertedBoard & MaskConstants.MASK_WIN_ROW3) == MaskConstants.MASK_WIN_ROW3)
             {
-                var row = spots.Take(3);
-                if (row.All(x => x.Item1 == true && x.Item2 == true))
-                {
-                    return true;
-                }
-                if (row.All(x => x.Item1 == true && x.Item2 == false))
-                {
-                    return false;
-                }
-                spots = spots.Skip(3).ToList();
+                return false;
             }
 
             // check columns
-            spots = new();
-            workingBoard = (bool[])board.Clone();
+            List<(bool, bool)> spots = new();
+            var workingBoard = (bool[])board.Clone();
             for (int i = 0; i < 9; i++)
             {
                 var spot = workingBoard.Take(2).ToArray();

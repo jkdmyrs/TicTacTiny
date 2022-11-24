@@ -15,5 +15,14 @@ namespace jkdmyrs.TicTacTiny.Domain
         public const string ROOM_DOES_NOT_EXIST = "Room does not exist.";
         public const string ROOM_IN_USE = "Room name is use. Pick a different name.";
     }
+
+    public static class MaskConstants
+    {
+        public const UInt32 MASK_WIN_ROW1 = 1032192u;
+        public const UInt32 MASK_WIN_ROW2 = 16128u;
+        public const UInt32 MASK_WIN_ROW3 = 252u;
+
+        public const UInt32 MASK_FLIP_GAME = 349524u;
+    }
 }
 
