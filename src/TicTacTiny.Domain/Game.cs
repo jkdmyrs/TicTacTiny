@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections;
-using System.Numerics;
-using jkdmyrs.TicTacTiny.Domain.Exceptions;
+﻿using jkdmyrs.TicTacTiny.Domain.Exceptions;
 using jkdmyrs.TicTacTiny.Domain.Extensions;
 
 namespace jkdmyrs.TicTacTiny.Domain
 {
     public class Game
     {
-        internal UInt32 Board { get; private set; }
+        public uint Board { get; private set; }
 
         public bool HasWinner => (Board & MaskConstants.MASK_WINNER) == MaskConstants.MASK_WINNER;
         public bool Winner
@@ -61,7 +58,7 @@ namespace jkdmyrs.TicTacTiny.Domain
                 {
                     throw new InvalidMoveException(string.Format(CopyTextConstants.DUPLICATE_MOVE_FMT, position));
                 }
-                Board = Board | MaskConstants.MASK_MOVE_POSITIONS[position];
+                Board |= MaskConstants.MASK_MOVE_POSITIONS[position];
                 Board = move ? Board | MaskConstants.MASK_MOVE_X_POSITIONS[position] : Board;
             }
 
@@ -69,32 +66,32 @@ namespace jkdmyrs.TicTacTiny.Domain
             bool? winner = CheckWinner(Board);
             if (winner is null)
             {
-                Board = Board & MaskConstants.MASK_NO_WINNER;
+                Board &= MaskConstants.MASK_NO_WINNER;
                 if (move)
                 {
-                    Board = Board & MaskConstants.MASK_NEXT_MOVE_0;
+                    Board &= MaskConstants.MASK_NEXT_MOVE_0;
                 }
                 else
                 {
-                    Board = Board | MaskConstants.MASK_NEXT_MOVE_X;
+                    Board |= MaskConstants.MASK_NEXT_MOVE_X;
                 }
             }
             else
             {
-                Board = Board | MaskConstants.MASK_WINNER;
+                Board |= MaskConstants.MASK_WINNER;
                 if (winner.Value)
                 {
-                    Board = Board | MaskConstants.MASK_WINNER_X;
+                    Board |= MaskConstants.MASK_WINNER_X;
                 }
                 else
                 {
-                    Board = Board & MaskConstants.MASK_WINNER_O;
+                    Board &= MaskConstants.MASK_WINNER_O;
                 }
             }
             return this;
         }
 
-        private static bool? CheckWinner(UInt32 hexBoard)
+        private static bool? CheckWinner(uint hexBoard)
         {
             bool? RunCheck(Func<uint, bool> check, uint board)
             {

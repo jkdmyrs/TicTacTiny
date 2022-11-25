@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TicTacTiny.Domain.Tests", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TicTacTiny.Web", "src\TicTacTiny.Web\TicTacTiny.Web.csproj", "{214F9BEB-6AA8-48FC-97DB-37812F7F8456}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TicTacTiny.Web.Components", "src\TicTacTiny.Web.Components\TicTacTiny.Web.Components.csproj", "{F1C66454-398B-48CC-A4BA-14688AA22632}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{214F9BEB-6AA8-48FC-97DB-37812F7F8456}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{214F9BEB-6AA8-48FC-97DB-37812F7F8456}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{214F9BEB-6AA8-48FC-97DB-37812F7F8456}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F1C66454-398B-48CC-A4BA-14688AA22632}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F1C66454-398B-48CC-A4BA-14688AA22632}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F1C66454-398B-48CC-A4BA-14688AA22632}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F1C66454-398B-48CC-A4BA-14688AA22632}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
