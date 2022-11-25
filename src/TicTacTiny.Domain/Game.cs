@@ -6,8 +6,8 @@ using jkdmyrs.TicTacTiny.Domain.Extensions;
 
 namespace jkdmyrs.TicTacTiny.Domain
 {
-  public class Game
-  {
+    public class Game
+    {
         public UInt32 Board { get; private set; }
 
         public bool HasWinner => (Board & MaskConstants.MASK_WINNER) == MaskConstants.MASK_WINNER;
