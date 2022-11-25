@@ -22,6 +22,13 @@ namespace jkdmyrs.TicTacTiny.Domain
         public const UInt32 MASK_WIN_ROW2 = 16128u;
         public const UInt32 MASK_WIN_ROW3 = 252u;
 
+        public const UInt32 MASK_WIN_COL1 = 798912u;
+        public const UInt32 MASK_WIN_COL2 = 199728u;
+        public const UInt32 MASK_WIN_COL3 = 49932u;
+
+        public const uint MASK_WIN_DIAG1 = 52416u;
+        public const uint MASK_WIN_DIAG2 = 789516u;
+
         public const UInt32 MASK_FLIP_GAME = 349524u;
     }
 }

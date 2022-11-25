@@ -100,7 +100,7 @@ namespace jkdmyrs.TicTacTiny.Domain
             newBoard[i] = true;
             newBoard[i+1] = move;
             hexBoard = Convert.ToUInt32(new Game(newBoard).ToString(), 16);
-            bool? winner = CheckWinner(newBoard, hexBoard);
+            bool? winner = CheckWinner(hexBoard);
             var reversed = newBoard.Reverse().ToArray();
             if (winner is not null)
             {
@@ -134,77 +134,54 @@ namespace jkdmyrs.TicTacTiny.Domain
             return string.Join(string.Empty, hex);
         }
 
-        // todo - improve this with bitwise maths
-        private static bool? CheckWinner(bool[] board, UInt32 hexBoard)
+        private static bool? CheckWinner(UInt32 hexBoard)
         {
-            // check rows
-            if ((hexBoard & MaskConstants.MASK_WIN_ROW1) == MaskConstants.MASK_WIN_ROW1
-                || (hexBoard & MaskConstants.MASK_WIN_ROW2) == MaskConstants.MASK_WIN_ROW2
-                || (hexBoard & MaskConstants.MASK_WIN_ROW3) == MaskConstants.MASK_WIN_ROW3)
+            bool? RunCheck(Func<uint, bool> check, uint board)
             {
-                return true;
-            }
-            UInt32 invertedBoard = hexBoard ^ MaskConstants.MASK_FLIP_GAME;
-            if ((invertedBoard & MaskConstants.MASK_WIN_ROW1) == MaskConstants.MASK_WIN_ROW1
-                || (invertedBoard & MaskConstants.MASK_WIN_ROW2) == MaskConstants.MASK_WIN_ROW2
-                || (invertedBoard & MaskConstants.MASK_WIN_ROW3) == MaskConstants.MASK_WIN_ROW3)
-            {
-                return false;
-            }
-
-            // check columns
-            List<(bool, bool)> spots = new();
-            var workingBoard = (bool[])board.Clone();
-            for (int i = 0; i < 9; i++)
-            {
-                var spot = workingBoard.Take(2).ToArray();
-                spots.Add((spot[0], spot[1]));
-                workingBoard = workingBoard.Skip(2).ToArray();
-            }
-            for (int i = 0; i < 3; i++)
-            {
-                List<(bool, bool)> col = new();
-                col.Add(spots[i]);
-                col.Add(spots[i + 3]);
-                col.Add(spots[i + 6]);
-                if (col.All(x => x.Item1 == true && x.Item2 == true))
+                if (check(hexBoard))
                 {
                     return true;
                 }
-                if (col.All(x => x.Item1 == true && x.Item2 == false))
+                if (check(hexBoard ^ MaskConstants.MASK_FLIP_GAME))
                 {
                     return false;
                 }
+                return null;
+            }
+
+            // check rows
+            bool RowCheck(uint board)
+            {
+                return (board & MaskConstants.MASK_WIN_ROW1) == MaskConstants.MASK_WIN_ROW1
+                || (board & MaskConstants.MASK_WIN_ROW2) == MaskConstants.MASK_WIN_ROW2
+                || (board & MaskConstants.MASK_WIN_ROW3) == MaskConstants.MASK_WIN_ROW3;
+            }
+            var check = RunCheck(RowCheck, hexBoard);
+            if (check is not null)
+            {
+                return check;
+            }
+
+            // check columns
+            bool ColumnCheck(uint board)
+            {
+                return (board & MaskConstants.MASK_WIN_COL1) == MaskConstants.MASK_WIN_COL1
+                || (board & MaskConstants.MASK_WIN_COL2) == MaskConstants.MASK_WIN_COL2
+                || (board & MaskConstants.MASK_WIN_COL3) == MaskConstants.MASK_WIN_COL3;
+            }
+            check = RunCheck(ColumnCheck, hexBoard);
+            if (check is not null)
+            {
+                return check;
             }
 
             // check diagonals
-            List<(bool, bool)> diag1 = new();
-            diag1.Add(spots[0]);
-            diag1.Add(spots[4]);
-            diag1.Add(spots[8]);
-            if (diag1.All(x => x.Item1 == true && x.Item2 == true))
+            bool DiagonalCheck(uint board)
             {
-                return true;
+                return (board & MaskConstants.MASK_WIN_DIAG1) == MaskConstants.MASK_WIN_DIAG1
+                    || (board & MaskConstants.MASK_WIN_DIAG2) == MaskConstants.MASK_WIN_DIAG2;
             }
-            if (diag1.All(x => x.Item1 == true && x.Item2 == false))
-            {
-                return false;
-            }
-
-            List<(bool, bool)> diag2 = new();
-            diag2.Add(spots[2]);
-            diag2.Add(spots[4]);
-            diag2.Add(spots[6]);
-            if (diag2.All(x => x.Item1 == true && x.Item2 == true))
-            {
-                return true;
-            }
-            if (diag2.All(x => x.Item1 == true && x.Item2 == false))
-            {
-                return false;
-            }
-
-            return null;
+            return RunCheck(DiagonalCheck, hexBoard);
         }
     }
 }
