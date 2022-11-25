@@ -1,4 +1,6 @@
 ﻿using System;
+using jkdmyrs.TicTacTiny.Domain.Exceptions;
+
 namespace jkdmyrs.TicTacTiny.Domain.Tests
 {
 	public class GameTests
@@ -7,17 +9,18 @@ namespace jkdmyrs.TicTacTiny.Domain.Tests
         public void QuickGame_XWins()
         {
             var game = Game.FromCode(DomainConstants.NEW_GAME);
-            game.hexBoard.Should().Be((uint)2);
+            game.ToString().Should().Be(DomainConstants.NEW_GAME);
+            game.Board.Should().Be((uint)2);
             game.Move(1, 1);
-            game.hexBoard.Should().Be((uint)196608);
+            game.Board.Should().Be((uint)196608);
             game.Move(0, 0);
-            game.hexBoard.Should().Be((uint)720898);
+            game.Board.Should().Be((uint)720898);
             game.Move(1, 4);
-            game.hexBoard.Should().Be((uint)723968);
+            game.Board.Should().Be((uint)723968);
             game.Move(0, 2);
-            game.hexBoard.Should().Be((uint)756738);
+            game.Board.Should().Be((uint)756738);
             game.Move(1, 7);
-            game.hexBoard.Should().Be((uint)756787);
+            game.Board.Should().Be((uint)756787);
             game.HasWinner.Should().BeTrue("because we have a winner");
             game.Winner.Should().BeTrue("because X won");
         }
@@ -26,19 +29,19 @@ namespace jkdmyrs.TicTacTiny.Domain.Tests
         public void QuickGame_OWins()
         {
             var game = Game.FromCode(DomainConstants.NEW_GAME);
-            game.hexBoard.Should().Be((uint)2);
+            game.Board.Should().Be((uint)2);
             game.Move(1, 8);
-            game.hexBoard.Should().Be((uint)12);
+            game.Board.Should().Be((uint)12);
             game.Move(0, 1);
-            game.hexBoard.Should().Be((uint)131086);
+            game.Board.Should().Be((uint)131086);
             game.Move(1, 0);
-            game.hexBoard.Should().Be((uint)917516);
+            game.Board.Should().Be((uint)917516);
             game.Move(0, 4);
-            game.hexBoard.Should().Be((uint)919566);
+            game.Board.Should().Be((uint)919566);
             game.Move(1, 2);
-            game.hexBoard.Should().Be((uint)968716);
+            game.Board.Should().Be((uint)968716);
             game.Move(0, 7);
-            game.hexBoard.Should().Be((uint)968749);
+            game.Board.Should().Be((uint)968749);
             game.HasWinner.Should().BeTrue("because we have a winner");
             game.Winner.Should().BeFalse("because O won");
         }
@@ -52,7 +55,7 @@ namespace jkdmyrs.TicTacTiny.Domain.Tests
             game.Move(1, 1);
             game.Move(0, 4);
             game.Move(1, 2);
-            (game.hexBoard & MaskConstants.MASK_WIN_ROW1).Should().Be(MaskConstants.MASK_WIN_ROW1);
+            (game.Board & MaskConstants.MASK_WIN_ROW1).Should().Be(MaskConstants.MASK_WIN_ROW1);
             game.HasWinner.Should().BeTrue("because we have a winner");
             game.Winner.Should().BeTrue("because X won");
         }
@@ -66,7 +69,7 @@ namespace jkdmyrs.TicTacTiny.Domain.Tests
             game.Move(1, 4);
             game.Move(0, 1);
             game.Move(1, 5);
-            (game.hexBoard & MaskConstants.MASK_WIN_ROW2).Should().Be(MaskConstants.MASK_WIN_ROW2);
+            (game.Board & MaskConstants.MASK_WIN_ROW2).Should().Be(MaskConstants.MASK_WIN_ROW2);
             game.HasWinner.Should().BeTrue("because we have a winner");
             game.Winner.Should().BeTrue("because X won");
         }
@@ -80,7 +83,7 @@ namespace jkdmyrs.TicTacTiny.Domain.Tests
             game.Move(1, 7);
             game.Move(0, 1);
             game.Move(1, 8);
-            (game.hexBoard & MaskConstants.MASK_WIN_ROW3).Should().Be(MaskConstants.MASK_WIN_ROW3);
+            (game.Board & MaskConstants.MASK_WIN_ROW3).Should().Be(MaskConstants.MASK_WIN_ROW3);
             game.HasWinner.Should().BeTrue("because we have a winner");
             game.Winner.Should().BeTrue("because X won");
         }
@@ -94,7 +97,7 @@ namespace jkdmyrs.TicTacTiny.Domain.Tests
             game.Move(1, 3);
             game.Move(0, 2);
             game.Move(1, 6);
-            (game.hexBoard & MaskConstants.MASK_WIN_COL1).Should().Be(MaskConstants.MASK_WIN_COL1);
+            (game.Board & MaskConstants.MASK_WIN_COL1).Should().Be(MaskConstants.MASK_WIN_COL1);
             game.HasWinner.Should().BeTrue("because we have a winner");
             game.Winner.Should().BeTrue("because X won");
         }
@@ -108,7 +111,7 @@ namespace jkdmyrs.TicTacTiny.Domain.Tests
             game.Move(1, 4);
             game.Move(0, 3);
             game.Move(1, 7);
-            (game.hexBoard & MaskConstants.MASK_WIN_COL2).Should().Be(MaskConstants.MASK_WIN_COL2);
+            (game.Board & MaskConstants.MASK_WIN_COL2).Should().Be(MaskConstants.MASK_WIN_COL2);
             game.HasWinner.Should().BeTrue("because we have a winner");
             game.Winner.Should().BeTrue("because X won");
         }
@@ -122,7 +125,7 @@ namespace jkdmyrs.TicTacTiny.Domain.Tests
             game.Move(1, 5);
             game.Move(0, 3);
             game.Move(1, 8);
-            (game.hexBoard & MaskConstants.MASK_WIN_COL3).Should().Be(MaskConstants.MASK_WIN_COL3);
+            (game.Board & MaskConstants.MASK_WIN_COL3).Should().Be(MaskConstants.MASK_WIN_COL3);
             game.HasWinner.Should().BeTrue("because we have a winner");
             game.Winner.Should().BeTrue("because X won");
         }
@@ -137,7 +140,7 @@ namespace jkdmyrs.TicTacTiny.Domain.Tests
             game.Move(0, 1);
             game.Move(1, 5);
             game.Move(0, 2);
-            ((game.hexBoard ^ MaskConstants.MASK_FLIP_GAME) & MaskConstants.MASK_WIN_ROW1).Should().Be(MaskConstants.MASK_WIN_ROW1);
+            ((game.Board ^ MaskConstants.MASK_FLIP_GAME) & MaskConstants.MASK_WIN_ROW1).Should().Be(MaskConstants.MASK_WIN_ROW1);
             game.HasWinner.Should().BeTrue("because we have a winner");
             game.Winner.Should().BeFalse("because O won");
         }
@@ -152,7 +155,7 @@ namespace jkdmyrs.TicTacTiny.Domain.Tests
             game.Move(0, 4);
             game.Move(1, 2);
             game.Move(0, 5);
-            ((game.hexBoard ^ MaskConstants.MASK_FLIP_GAME) & MaskConstants.MASK_WIN_ROW2).Should().Be(MaskConstants.MASK_WIN_ROW2);
+            ((game.Board ^ MaskConstants.MASK_FLIP_GAME) & MaskConstants.MASK_WIN_ROW2).Should().Be(MaskConstants.MASK_WIN_ROW2);
             game.HasWinner.Should().BeTrue("because we have a winner");
             game.Winner.Should().BeFalse("because O won");
         }
@@ -167,7 +170,7 @@ namespace jkdmyrs.TicTacTiny.Domain.Tests
             game.Move(0, 7);
             game.Move(1, 2);
             game.Move(0, 8);
-            ((game.hexBoard ^ MaskConstants.MASK_FLIP_GAME) & MaskConstants.MASK_WIN_ROW3).Should().Be(MaskConstants.MASK_WIN_ROW3);
+            ((game.Board ^ MaskConstants.MASK_FLIP_GAME) & MaskConstants.MASK_WIN_ROW3).Should().Be(MaskConstants.MASK_WIN_ROW3);
             game.HasWinner.Should().BeTrue("because we have a winner");
             game.Winner.Should().BeFalse("because O won");
         }
@@ -182,7 +185,7 @@ namespace jkdmyrs.TicTacTiny.Domain.Tests
             game.Move(0, 3);
             game.Move(1, 7);
             game.Move(0, 6);
-            ((game.hexBoard ^ MaskConstants.MASK_FLIP_GAME) & MaskConstants.MASK_WIN_COL1).Should().Be(MaskConstants.MASK_WIN_COL1);
+            ((game.Board ^ MaskConstants.MASK_FLIP_GAME) & MaskConstants.MASK_WIN_COL1).Should().Be(MaskConstants.MASK_WIN_COL1);
             game.HasWinner.Should().BeTrue("because we have a winner");
             game.Winner.Should().BeFalse("because O won");
         }
@@ -197,7 +200,7 @@ namespace jkdmyrs.TicTacTiny.Domain.Tests
             game.Move(0, 4);
             game.Move(1, 6);
             game.Move(0, 7);
-            ((game.hexBoard ^ MaskConstants.MASK_FLIP_GAME) & MaskConstants.MASK_WIN_COL2).Should().Be(MaskConstants.MASK_WIN_COL2);
+            ((game.Board ^ MaskConstants.MASK_FLIP_GAME) & MaskConstants.MASK_WIN_COL2).Should().Be(MaskConstants.MASK_WIN_COL2);
             game.HasWinner.Should().BeTrue("because we have a winner");
             game.Winner.Should().BeFalse("because O won");
         }
@@ -212,7 +215,7 @@ namespace jkdmyrs.TicTacTiny.Domain.Tests
             game.Move(0, 5);
             game.Move(1, 7);
             game.Move(0, 8);
-            ((game.hexBoard ^ MaskConstants.MASK_FLIP_GAME) & MaskConstants.MASK_WIN_COL3).Should().Be(MaskConstants.MASK_WIN_COL3);
+            ((game.Board ^ MaskConstants.MASK_FLIP_GAME) & MaskConstants.MASK_WIN_COL3).Should().Be(MaskConstants.MASK_WIN_COL3);
             game.HasWinner.Should().BeTrue("because we have a winner");
             game.Winner.Should().BeFalse("because O won");
         }
@@ -226,7 +229,7 @@ namespace jkdmyrs.TicTacTiny.Domain.Tests
             game.Move(1, 4);
             game.Move(0, 8);
             game.Move(1, 6);
-            (game.hexBoard & MaskConstants.MASK_WIN_DIAG1).Should().Be(MaskConstants.MASK_WIN_DIAG1);
+            (game.Board & MaskConstants.MASK_WIN_DIAG1).Should().Be(MaskConstants.MASK_WIN_DIAG1);
             game.HasWinner.Should().BeTrue("because we have a winner");
             game.Winner.Should().BeTrue("because X won");
         }
@@ -240,7 +243,7 @@ namespace jkdmyrs.TicTacTiny.Domain.Tests
             game.Move(1, 4);
             game.Move(0, 3);
             game.Move(1, 8);
-            (game.hexBoard & MaskConstants.MASK_WIN_DIAG2).Should().Be(MaskConstants.MASK_WIN_DIAG2);
+            (game.Board & MaskConstants.MASK_WIN_DIAG2).Should().Be(MaskConstants.MASK_WIN_DIAG2);
             game.HasWinner.Should().BeTrue("because we have a winner");
             game.Winner.Should().BeTrue("because X won");
         }
@@ -255,7 +258,7 @@ namespace jkdmyrs.TicTacTiny.Domain.Tests
             game.Move(0, 4);
             game.Move(1, 7);
             game.Move(0, 6);
-            ((game.hexBoard ^ MaskConstants.MASK_FLIP_GAME) & MaskConstants.MASK_WIN_DIAG1).Should().Be(MaskConstants.MASK_WIN_DIAG1);
+            ((game.Board ^ MaskConstants.MASK_FLIP_GAME) & MaskConstants.MASK_WIN_DIAG1).Should().Be(MaskConstants.MASK_WIN_DIAG1);
             game.HasWinner.Should().BeTrue("because we have a winner");
             game.Winner.Should().BeFalse("because O won");
         }
@@ -270,9 +273,18 @@ namespace jkdmyrs.TicTacTiny.Domain.Tests
             game.Move(0, 4);
             game.Move(1, 7);
             game.Move(0, 8);
-            ((game.hexBoard ^ MaskConstants.MASK_FLIP_GAME) & MaskConstants.MASK_WIN_DIAG2).Should().Be(MaskConstants.MASK_WIN_DIAG2);
+            ((game.Board ^ MaskConstants.MASK_FLIP_GAME) & MaskConstants.MASK_WIN_DIAG2).Should().Be(MaskConstants.MASK_WIN_DIAG2);
             game.HasWinner.Should().BeTrue("because we have a winner");
             game.Winner.Should().BeFalse("because O won");
+        }
+
+        [Fact]
+        public void CannotPlayInSamePositionTwice()
+        {
+            var game = Game.FromCode(DomainConstants.NEW_GAME);
+            game.Move(1, 3);
+            Action act = () => game.Move(0, 3);
+            act.Should().Throw<InvalidMoveException>();
         }
     }
 }
