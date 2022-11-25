@@ -3,7 +3,7 @@ using Azure.Data.Tables;
 
 namespace jkdmyrs.TicTacTiny.Infrastructure
 {
-	public class GameRoomEntity : ITableEntity
+    public class GameRoomEntity : ITableEntity
 	{
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
         public GameRoomEntity() { }

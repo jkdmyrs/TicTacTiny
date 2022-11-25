@@ -24,7 +24,6 @@ namespace jkdmyrs.TicTacTiny.API.Middleware
                     switch (e)
                     {
                         // 400
-                        case InvalidBoardException:
                         case InvalidMoveException:
                             return await req.CreateStatusCodeResultAsync(HttpStatusCode.BadRequest, e.Message);
                         // 401

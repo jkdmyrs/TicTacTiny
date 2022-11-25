@@ -8,7 +8,7 @@ namespace jkdmyrs.TicTacTiny.Domain.Tests
         [Fact]
         public void QuickGame_XWins()
         {
-            var game = Game.FromCode(DomainConstants.NEW_GAME);
+            Game game = new(DomainConstants.NEW_GAME);
             game.ToString().Should().Be(DomainConstants.NEW_GAME);
             game.Board.Should().Be((uint)2);
             game.Move(1, 1);
@@ -28,7 +28,7 @@ namespace jkdmyrs.TicTacTiny.Domain.Tests
         [Fact]
         public void QuickGame_OWins()
         {
-            var game = Game.FromCode(DomainConstants.NEW_GAME);
+            Game game = new(DomainConstants.NEW_GAME);
             game.Board.Should().Be((uint)2);
             game.Move(1, 8);
             game.Board.Should().Be((uint)12);
@@ -49,7 +49,7 @@ namespace jkdmyrs.TicTacTiny.Domain.Tests
         [Fact]
         public void Row1MaskCheck_X()
         {
-            var game = Game.FromCode(DomainConstants.NEW_GAME);
+            Game game = new(DomainConstants.NEW_GAME);
             game.Move(1, 0);
             game.Move(0, 3);
             game.Move(1, 1);
@@ -63,7 +63,7 @@ namespace jkdmyrs.TicTacTiny.Domain.Tests
         [Fact]
         public void Row2MaskCheck_X()
         {
-            var game = Game.FromCode(DomainConstants.NEW_GAME);
+            Game game = new(DomainConstants.NEW_GAME);
             game.Move(1, 3);
             game.Move(0, 0);
             game.Move(1, 4);
@@ -77,7 +77,7 @@ namespace jkdmyrs.TicTacTiny.Domain.Tests
         [Fact]
         public void Row3MaskCheck_X()
         {
-            var game = Game.FromCode(DomainConstants.NEW_GAME);
+            Game game = new(DomainConstants.NEW_GAME);
             game.Move(1, 6);
             game.Move(0, 0);
             game.Move(1, 7);
@@ -91,7 +91,7 @@ namespace jkdmyrs.TicTacTiny.Domain.Tests
         [Fact]
         public void Col1MaskCheck_X()
         {
-            var game = Game.FromCode(DomainConstants.NEW_GAME);
+            Game game = new(DomainConstants.NEW_GAME);
             game.Move(1, 0);
             game.Move(0, 1);
             game.Move(1, 3);
@@ -105,7 +105,7 @@ namespace jkdmyrs.TicTacTiny.Domain.Tests
         [Fact]
         public void Col2MaskCheck_X()
         {
-            var game = Game.FromCode(DomainConstants.NEW_GAME);
+            Game game = new(DomainConstants.NEW_GAME);
             game.Move(1, 1);
             game.Move(0, 0);
             game.Move(1, 4);
@@ -119,7 +119,7 @@ namespace jkdmyrs.TicTacTiny.Domain.Tests
         [Fact]
         public void Col3MaskCheck_X()
         {
-            var game = Game.FromCode(DomainConstants.NEW_GAME);
+            Game game = new(DomainConstants.NEW_GAME);
             game.Move(1, 2);
             game.Move(0, 0);
             game.Move(1, 5);
@@ -133,7 +133,7 @@ namespace jkdmyrs.TicTacTiny.Domain.Tests
         [Fact]
         public void Row1MaskCheck_O()
         {
-            var game = Game.FromCode(DomainConstants.NEW_GAME);
+            Game game = new(DomainConstants.NEW_GAME);
             game.Move(1, 8);
             game.Move(0, 0);
             game.Move(1, 3);
@@ -148,7 +148,7 @@ namespace jkdmyrs.TicTacTiny.Domain.Tests
         [Fact]
         public void Row2MaskCheck_O()
         {
-            var game = Game.FromCode(DomainConstants.NEW_GAME);
+            Game game = new(DomainConstants.NEW_GAME);
             game.Move(1, 8);
             game.Move(0, 3);
             game.Move(1, 0);
@@ -163,7 +163,7 @@ namespace jkdmyrs.TicTacTiny.Domain.Tests
         [Fact]
         public void Row3MaskCheck_O()
         {
-            var game = Game.FromCode(DomainConstants.NEW_GAME);
+            Game game = new(DomainConstants.NEW_GAME);
             game.Move(1, 4);
             game.Move(0, 6);
             game.Move(1, 0);
@@ -178,7 +178,7 @@ namespace jkdmyrs.TicTacTiny.Domain.Tests
         [Fact]
         public void Col1MaskCheck_O()
         {
-            var game = Game.FromCode(DomainConstants.NEW_GAME);
+            Game game = new(DomainConstants.NEW_GAME);
             game.Move(1, 1);
             game.Move(0, 0);
             game.Move(1, 5);
@@ -193,7 +193,7 @@ namespace jkdmyrs.TicTacTiny.Domain.Tests
         [Fact]
         public void Col2MaskCheck_O()
         {
-            var game = Game.FromCode(DomainConstants.NEW_GAME);
+            Game game = new(DomainConstants.NEW_GAME);
             game.Move(1, 0);
             game.Move(0, 1);
             game.Move(1, 5);
@@ -208,7 +208,7 @@ namespace jkdmyrs.TicTacTiny.Domain.Tests
         [Fact]
         public void Col3MaskCheck_O()
         {
-            var game = Game.FromCode(DomainConstants.NEW_GAME);
+            Game game = new(DomainConstants.NEW_GAME);
             game.Move(1, 1);
             game.Move(0, 2);
             game.Move(1, 3);
@@ -223,7 +223,7 @@ namespace jkdmyrs.TicTacTiny.Domain.Tests
         [Fact]
         public void Diag1MaskCheck_X()
         {
-            var game = Game.FromCode(DomainConstants.NEW_GAME);
+            Game game = new(DomainConstants.NEW_GAME);
             game.Move(1, 2);
             game.Move(0, 0);
             game.Move(1, 4);
@@ -237,7 +237,7 @@ namespace jkdmyrs.TicTacTiny.Domain.Tests
         [Fact]
         public void Diag2MaskCheck_X()
         {
-            var game = Game.FromCode(DomainConstants.NEW_GAME);
+            Game game = new(DomainConstants.NEW_GAME);
             game.Move(1, 0);
             game.Move(0, 2);
             game.Move(1, 4);
@@ -251,7 +251,7 @@ namespace jkdmyrs.TicTacTiny.Domain.Tests
         [Fact]
         public void Diag1MaskCheck_O()
         {
-            var game = Game.FromCode(DomainConstants.NEW_GAME);
+            Game game = new(DomainConstants.NEW_GAME);
             game.Move(1, 3);
             game.Move(0, 2);
             game.Move(1, 5);
@@ -266,7 +266,7 @@ namespace jkdmyrs.TicTacTiny.Domain.Tests
         [Fact]
         public void Diag2MaskCheck_O()
         {
-            var game = Game.FromCode(DomainConstants.NEW_GAME);
+            Game game = new(DomainConstants.NEW_GAME);
             game.Move(1, 3);
             game.Move(0, 0);
             game.Move(1, 5);
@@ -281,7 +281,7 @@ namespace jkdmyrs.TicTacTiny.Domain.Tests
         [Fact]
         public void CannotPlayInSamePositionTwice()
         {
-            var game = Game.FromCode(DomainConstants.NEW_GAME);
+            Game game = new(DomainConstants.NEW_GAME);
             game.Move(1, 3);
             Action act = () => game.Move(0, 3);
             act.Should().Throw<InvalidMoveException>();

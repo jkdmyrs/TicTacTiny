@@ -5,7 +5,7 @@ namespace jkdmyrs.TicTacTiny.Infrastructure.Exceptions
 {
 	public class EntityConfilctException : Exception
 	{
-		public EntityConfilctException()
+        internal EntityConfilctException()
 			: base(CopyTextConstants.ROOM_IN_USE)
 		{
 

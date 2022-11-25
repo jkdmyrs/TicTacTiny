@@ -8,7 +8,7 @@ namespace jkdmyrs.TicTacTiny.Domain
 {
     public class Game
     {
-        public UInt32 Board { get; private set; }
+        internal UInt32 Board { get; private set; }
 
         public bool HasWinner => (Board & MaskConstants.MASK_WINNER) == MaskConstants.MASK_WINNER;
         public bool Winner
@@ -34,12 +34,9 @@ namespace jkdmyrs.TicTacTiny.Domain
             }
         }
 
-        public static Game FromCode(string hexStr)
+        public Game(string hexStr)
         {
-            return new Game
-            {
-                Board = Convert.ToUInt32(hexStr, 16)
-            };
+            Board = Convert.ToUInt32(hexStr, 16);
         }
 
         public Game Move(int player, int position)
